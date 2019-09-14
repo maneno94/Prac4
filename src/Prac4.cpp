@@ -1,20 +1,9 @@
 
 /*
+ * EEE3096S
  * Prac4.cpp
- *
- * Originall written by Stefan Schröder and Dillion Heald
- *
- * Adapted for EEE3096S 2019 by Keegan Crankshaw
- *
- * This file is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * 
+ * MANENO MGWAMI (MGWMAN006) AND KEVIN PIAO (PXXZHE001)
  */
 
 #include "Prac4.h"
@@ -29,11 +18,7 @@ bool bufferReading = 0; //using this to switch between column 0 and 1 - the firs
 bool threadReady = false; //using this to finish writing the first column at the start of the song, before the column is played
 
 
-// Configure your interrupts here.
-// Don't forget to use debouncing.
-//int ki=wiringPiISR(PLAY_BUTTON,INT_EDGE_FALLING,&play_audio);
-//int kj=wiringPiISR(STOP_BUTTON,INT_EDGE_FALLING,&stop_audio);//int ki=wiringPiISR(PLAY_BUTTON,INT_EDGE_FALLING,&play_audio);
-//int kj=wiringPiISR(STOP_BUTTON,INT_EDGE_FALLING,&stop_audio);
+
 long lastInterruptTime =0 ;
 
 void play(void)
@@ -62,8 +47,6 @@ int setup_gpio(void){
      wiringPiSetup();
     //setting up the buttons
     pinMode(PLAY_BUTTON, INPUT);
-
-
     pullUpDnControl(PLAY_BUTTON, PUD_UP);
     pullUpDnControl(STOP_BUTTON, PUD_UP);
     wiringPiISR(PLAY_BUTTON,INT_EDGE_FALLING,play);
@@ -173,19 +156,12 @@ int main(){
         //Set config bits for first 8 bit packet and OR with upper bits
 
         char value = fgetc(filePointer);
-        //bitset<8> y(value);
-        //cout << "value " << y << " \n";
-
+       
         char upper = ((value >> 6) & 0xff) | 0b0 << 7 | 0b0 << 6 | 0b1 << 5 | 0b1 << 4;
-        //bitset<8> y_(upper);
-        //cout << "upper " << y_ << " \n";
-
         char lower = value << 2 & 0b11111100;
-        //bitset<8> g(lower);
-                //cout << "2nd byte " << g << " \n";
-
+       
         buffer[bufferWriting][counter][0] = upper; //TODO
-        //Set next 8 bit packet
+     
         buffer[bufferWriting][counter][1] = lower; //TODO
 
         counter++;
